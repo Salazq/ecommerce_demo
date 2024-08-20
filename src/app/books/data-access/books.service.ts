@@ -1,69 +1,53 @@
 import { Injectable, inject } from '@angular/core';
-import {
-  Firestore,
-  addDoc,
-  collection,
-  collectionData,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  updateDoc,
-  where,
-} from '@angular/fire/firestore';
+import {Firestore, addDoc, collection, collectionData, deleteDoc, doc, getDoc, getDocs, query, updateDoc, where} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 import { Book, BookForm } from '../interfaces/books.interface';
 
-const PATH = 'books';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BooksService {
-  private _firestore = inject(Firestore);
 
-  private _collection = collection(this._firestore, PATH);
+  private firestore = inject(Firestore);
+  private collection = collection(this.firestore, 'books');
+
 
   getbooks() {
-    return collectionData(this._collection, { idField: 'id' }) as Observable<
-      Book[]
-    >;
+    return collectionData(this.collection, { idField: 'id' }) as Observable<Book[]>;
   }
 
   async getbook(id: string) {
-      const snapshot = await getDoc(this.document(id));
+      const snapshot = await getDoc(doc(this.firestore, `books/${id}`));
       return snapshot.data() as Book;
   }
 
   async searchbookByQuery(name: string) {
-    const q = query(
-      this._collection,
+
+    const querySnapshot = await getDocs(query(
+      this.collection,
       where('name', '>=', name),
       where('name', '<=', name + '\uf8ff'),
-    );
-    const querySnapshot = await getDocs(q);
-    let books: Book[] = [];
-    querySnapshot.forEach((doc) => {
-      books = [...books, { id: doc.id, ...doc.data() } as Book];
-    });
+    ));
+
+    let books: Book[];
+
+    books = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Book));
+
     return books;
   }
 
   createbook(book: BookForm) {
-    return addDoc(this._collection, book);
+    return addDoc(this.collection, book);
   }
 
   updatebook(id: string, book: BookForm) {
-    return updateDoc(this.document(id), { ...book });
+    return updateDoc(doc(this.firestore, `books/${id}`), { ...book });
   }
 
   deletebook(id: string) {
-    return deleteDoc(this.document(id));
+    return deleteDoc(doc(this.firestore, `books/${id}`));
   }
 
-  private document(id: string) {
-    return doc(this._firestore, `${PATH}/${id}`);
-  }
 }

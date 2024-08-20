@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AsyncPipe } from '@angular/common';
-
 import { CardBookComponent } from '../ui/card-book.component';
 import { BooksService } from '../data-access/books.service';
 import { Book } from '../interfaces/books.interface';
@@ -10,10 +9,12 @@ import { of } from 'rxjs';
 
 @Component({
   template: `
-    <div class="px-4 xl:px-0 w-full max-w-[1200px] m-auto">
+    <div class="max-w-[1200px] m-auto">
+
       <app-search-bar (changeQuery)="changeQuery($event)" />
+
       <section class="grid grid-cols-3 gap-8 mt-8">
-        @for (book of books$ | async; track book.id) {
+        @for (book of books | async; track book.id) {
           <app-card-book
             [book]="book"
             (deleteBook)="deleteBook($event)"
@@ -29,25 +30,21 @@ import { of } from 'rxjs';
 
 export default class BookDashboardComponent {
 
-  private _booksService = inject(BooksService);
-  private _router = inject(Router);
+  private booksService = inject(BooksService);
+  private router = inject(Router);
 
-  books$ = this._booksService.getbooks();
+  books = this.booksService.getbooks();
 
   async deleteBook(id: string) {
-    try {
-      await this._booksService.deletebook(id);
-    } catch (error) {}
+      await this.booksService.deletebook(id);
   }
 
   editBook(book: Book) {
-    this._router.navigate(['/dashboard/edit', book.id]);
+    this.router.navigate(['/dashboard/edit', book.id]);
   }
 
   async changeQuery(query: string) {
-  try {
-      const books = await this._booksService.searchbookByQuery(query);
-      this.books$ = of(books);
-    } catch (error) {}
+      const books = await this.booksService.searchbookByQuery(query);
+      this.books = of(books);
   }
 }

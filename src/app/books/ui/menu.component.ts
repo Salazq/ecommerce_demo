@@ -8,9 +8,9 @@ import { IconSettings } from '../icons/settings';
       <app-icon-settings />
 
       @if (isOpen) {
-        <!-- Dropdown menu -->
+
         <div
-          class="z-10 absolute right-0 top-7 p-1 min-w-24 bg-black rounded-md border border-gray-500/50 shadow overflow-hidden"
+          class="absolute right-0 top-7 border border-gray-500/50"
         >
           <ul
             class="text-sm text-gray-200"
@@ -18,16 +18,15 @@ import { IconSettings } from '../icons/settings';
           >
             <li class="mb-1">
               <button
-                class="w-full flex flex-row gap-x-2 items-center p-1 text-xs rounded-sm hover:bg-zinc-900"
-                (click)="onEditBook.emit()"
-              >
+                class="w-full p-1 hover:bg-zinc-900"
+                (click)="onEditBook.emit()">
                  Edit
               </button>
             </li>
             <li>
               <button
                 (click)="onDeleteBook.emit()"
-                class="w-full flex flex-row gap-x-2 items-center p-1 text-xs rounded-sm hover:bg-zinc-900"
+                class="w-full p-1 hover:bg-zinc-900"
               >
                  Delete
               </button>

@@ -6,5 +6,4 @@ export interface BookForm {
   name: string;
   description: string;
   value: number;
-
 }

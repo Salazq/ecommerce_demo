@@ -1,13 +1,6 @@
-import {
-  Component,
-  EventEmitter,
-  Output,
-  computed,
-  effect,
-} from '@angular/core';
+import {Component, EventEmitter, Output, computed, effect} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-
 import { IconPlus } from '../icons/plus';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { RouterLink } from '@angular/router';
@@ -19,11 +12,11 @@ import { RouterLink } from '@angular/router';
       <input
         type="text"
         placeholder="Search books"
-        class="w-full p-3 rounded-md text-sm bg-transparent border-gray-500 border"
+        class="w-full p-2 rounded-md border"
         [formControl]="control"
       />
       <a
-        class="text-sm flex text-nowrap items-center gap-x-2 hover:text-gray-300 transition-[color] ease-in-out duration-200 p-4 cursor-pointer"
+        class="flex text-nowrap items-center"
         routerLink="/dashboard/create"
       >
         <app-icon-plus class="size-4" />
