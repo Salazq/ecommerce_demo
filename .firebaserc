@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "fir-50674": {
+      "hosting": {
+        "ecommerce": [
+          "fir-50674"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "fir-50674"
+  }
+}
